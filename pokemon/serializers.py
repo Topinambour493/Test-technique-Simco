@@ -8,6 +8,8 @@ from pokedex.serializers import PokedexCreatureDetailSerializer
 class PokemonSerializer(serializers.ModelSerializer):
     """Serializer of Pokemon object"""
 
+    trainer = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Pokemon
         fields = (
@@ -24,7 +26,7 @@ class PokemonSerializer(serializers.ModelSerializer):
         """Add pokemon nickname if no nickname is given"""
         nickname = attrs.get("nickname")
         pokedex_creature = attrs.get("pokedex_creature")
-        if not nickname:
+        if nickname in ["", None]:
             attrs["nickname"] = pokedex_creature.name
 
         return super().validate(attrs)

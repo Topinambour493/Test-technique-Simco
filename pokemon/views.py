@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .filters import PokemonFilter
 from .models import Pokemon
+from .permissions import ObjectPermission
 from .serializers import PokemonDetailsSerializer
 from .serializers import PokemonGiveXPSerializer
 from .serializers import PokemonSerializer
@@ -32,17 +33,26 @@ from .serializers import PokemonSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Pokemon.objects.all().order_by("pokedex_creature__ref_number")
+    permission_classes = (
+        IsAuthenticated,
+        ObjectPermission,
+    )
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
+
+    def get_queryset(self):
+        if self.action == "list":
+            user = self.request.user
+            queryset = Pokemon.objects.filter(trainer=user)
+            return queryset.order_by("pokedex_creature__ref_number")
+
+        return Pokemon.objects.all().order_by("pokedex_creature__ref_number")
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return PokemonDetailsSerializer
         elif self.action == "give_xp":
             return PokemonGiveXPSerializer
-
         return PokemonSerializer
 
     @action(methods=["POST"], detail=True, url_path="give_xp")
