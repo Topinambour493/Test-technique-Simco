@@ -16,7 +16,7 @@ import django_env_overrides
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 STATIC_URL = "/static/"

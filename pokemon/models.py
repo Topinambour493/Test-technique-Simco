@@ -28,6 +28,9 @@ class Pokemon(models.Model):
     level = models.PositiveSmallIntegerField(default=1)
     experience = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        unique_together = ("trainer", "nickname")
+
     def clean(self):
         """
         Set default nickname to related pokedex creature name

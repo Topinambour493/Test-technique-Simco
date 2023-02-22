@@ -33,9 +33,20 @@ from .serializers import PokemonSerializer
 )
 class PokemonViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    queryset = Pokemon.objects.all().order_by("pokedex_creature__ref_number")
-    serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PokemonDetailsSerializer
+        elif self.action == "give_xp":
+            return PokemonGiveXPSerializer
+
+        return PokemonSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Pokemon.objects.filter(trainer=user)
+        return queryset.order_by("pokedex_creature__ref_number")
 
     def get_serializer_class(self):
         if self.action == "retrieve":
