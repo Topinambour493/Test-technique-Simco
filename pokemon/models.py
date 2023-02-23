@@ -39,9 +39,9 @@ class Pokemon(models.Model):
 
     def __str__(self):
         """
-        Return Pokermon name with the trainer username if it has one
+        Return Pokemon name with the trainer username if it has one
 
-        Return Pokermon name (wild) if not
+        Return Pokemon name (wild) if not
         """
 
         return "{} ({})".format(
