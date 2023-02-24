@@ -20,13 +20,13 @@ class PokemonSerializer(serializers.ModelSerializer):
             "level",
             "experience",
         )
-        read_only_fields = ("id", "level")
+        read_only_fields = ("id",)
 
     def validate(self, attrs):
         """Add pokemon nickname if no nickname is given"""
         nickname = attrs.get("nickname")
         pokedex_creature = attrs.get("pokedex_creature")
-        if nickname in ["", None]:
+        if not nickname:
             attrs["nickname"] = pokedex_creature.name
 
         return super().validate(attrs)
