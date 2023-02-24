@@ -13,13 +13,10 @@ class Pokemon(models.Model):
     )
 
     trainer = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True
     )
 
-    nickname = models.CharField(
-        max_length=100,
-    )
+    nickname = models.CharField(max_length=100, blank=True, null=True)
 
     level = models.PositiveSmallIntegerField(default=1)
     experience = models.PositiveIntegerField(default=0)
