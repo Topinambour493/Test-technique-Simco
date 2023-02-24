@@ -19,6 +19,7 @@ class PokemonSerializer(serializers.ModelSerializer):
             "nickname",
             "level",
             "experience",
+            "team",
         )
         read_only_fields = ("id",)
 
@@ -45,6 +46,7 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
             "experience",
             "pokedex_creature",
             "trainer",
+            "team",
         )
 
 
