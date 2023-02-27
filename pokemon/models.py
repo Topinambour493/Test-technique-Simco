@@ -39,7 +39,7 @@ class Pokemon(models.Model):
         Set default nickname to related pokedex creature name
         if no nickname is given
         """
-        if self.trainer != self.team.trainer:
+        if self.trainer and self.trainer != self.team.trainer:
             raise ValidationError(
                 _("this team is not yours, mind your business"), code="invalid"
             )
