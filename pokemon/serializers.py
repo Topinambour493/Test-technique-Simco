@@ -35,7 +35,6 @@ class PokemonSerializer(serializers.ModelSerializer):
 
 class PokemonDetailsSerializer(serializers.ModelSerializer):
     pokedex_creature = PokedexCreatureDetailSerializer()
-    trainer = UserSerializer()
 
     class Meta:
         model = Pokemon
@@ -45,7 +44,6 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
             "level",
             "experience",
             "pokedex_creature",
-            "trainer",
             "team",
         )
 

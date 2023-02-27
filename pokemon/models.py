@@ -26,7 +26,7 @@ class Pokemon(models.Model):
 
     team = models.ForeignKey(
         Team,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )

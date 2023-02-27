@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Team
-from authentication.serializers import UserSerializer
+from pokemon.serializers import PokemonSerializer
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -20,8 +20,6 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class TeamDetailsSerializer(serializers.ModelSerializer):
-    trainer = UserSerializer()
-
     class Meta:
         model = Team
         fields = (

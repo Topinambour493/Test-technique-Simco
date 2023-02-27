@@ -35,10 +35,14 @@ class TeamViewSet(ModelViewSet):
         ObjectPermission,
     )
     filterset_class = TeamFilter
-    serializer_class = TeamSerializer
 
     def get_queryset(self):
         if self.action == "list":
             user = self.request.user
             return Team.objects.filter(trainer=user).order_by("name")
         return Team.objects.all().order_by("name")
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return TeamDetailsSerializer
+        return TeamSerializer

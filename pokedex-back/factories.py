@@ -8,9 +8,19 @@ from pytest_factoryboy import register
 
 from pokedex.models import PokedexCreature
 from pokemon.models import Pokemon
+from team.models import Team
 
 User = get_user_model()
 DEFAULT_PASSWORD = "secretpassword"
+
+
+class TeamFactory(DjangoModelFactory):
+    """Generator of Team objects"""
+
+    class Meta:
+        model = Team
+
+    name = factory.Sequence(lambda n: f"Team {n + 1}")
 
 
 class PokedexCreatureFactory(DjangoModelFactory):
