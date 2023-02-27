@@ -43,7 +43,9 @@ class Pokemon(models.Model):
             raise ValidationError(
                 _("this team is not yours, mind your business"), code="invalid"
             )
-        if Pokemon.objects.filter(trainer=self.trainer).count() >= 6:
+        if Pokemon.objects.filter(
+            trainer=self.trainer
+        ).count() >= 6 and not Pokemon.objects.get(pk=self.pk):
             raise ValidationError(
                 _(
                     "This team is complete. It is already composed of 6 pokemons. First remove a pokemon from your team if you want to add this one."
@@ -52,6 +54,7 @@ class Pokemon(models.Model):
             )
         if not self.nickname:
             self.nickname = self.pokedex_creature.name
+        self.level = 1 + self.experience // 100
         return super().clean()
 
     def save(self, *args, **kwargs):
@@ -74,5 +77,4 @@ class Pokemon(models.Model):
         Update pokemon level based on the XP is received
         """
         self.experience += amount
-        self.level = 1 + self.experience // 100
         self.save()
