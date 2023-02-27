@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from rest_framework.exceptions import ValidationError
 
 from pokedex.models import PokedexCreature
+from team.models import Team
 
 
 class Pokemon(models.Model):
@@ -21,6 +24,13 @@ class Pokemon(models.Model):
     level = models.PositiveSmallIntegerField(default=1)
     experience = models.PositiveIntegerField(default=0)
 
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         unique_together = ("trainer", "nickname")
 
@@ -29,10 +39,24 @@ class Pokemon(models.Model):
         Set default nickname to related pokedex creature name
         if no nickname is given
         """
-
+        if self.trainer != self.team.trainer:
+            raise ValidationError(
+                _("this team is not yours, mind your business"), code="invalid"
+            )
+        if Pokemon.objects.filter(trainer=self.trainer).count() >= 6:
+            raise ValidationError(
+                _(
+                    "This team is complete. It is already composed of 6 pokemons. First remove a pokemon from your team if you want to add this one."
+                ),
+                code="invalid",
+            )
         if not self.nickname:
             self.nickname = self.pokedex_creature.name
         return super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         """
