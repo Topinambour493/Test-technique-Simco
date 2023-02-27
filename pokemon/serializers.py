@@ -21,7 +21,7 @@ class PokemonSerializer(serializers.ModelSerializer):
             "experience",
             "team",
         )
-        read_only_fields = ("id",)
+        read_only_fields = ("id", "level")
 
     def validate(self, attrs):
         """Add pokemon nickname if no nickname is given"""
@@ -41,11 +41,13 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "nickname",
-            "level",
             "experience",
+            "level",
             "pokedex_creature",
             "team",
         )
+
+    read_only_fields = ("id", "level")
 
 
 class PokemonGiveXPSerializer(serializers.Serializer):
